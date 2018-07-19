@@ -13,7 +13,7 @@ class BasicParserSpec extends TestBase("BasicParser") {
   }
 
   it should "return a failure msg in case of no match" in {
-    parseChar('C')("AB").merge shouldBe "Didn't match"
+    parseChar('C')("AB").merge shouldBe "Expecting 'C'. Got 'A'"
   }
 
   it should "return No more input for empty and null string inputs" in {
@@ -24,7 +24,7 @@ class BasicParserSpec extends TestBase("BasicParser") {
   it should "run the parser on the given input" in {
     val parseH = Parser(parseChar('H'))
     runParser("Hello", parseH).merge shouldBe ("ello", 'H')
-    runParser("hola", parseH).merge shouldBe "Didn't match"
+    runParser("hola", parseH).merge shouldBe "Expecting 'H'. Got 'h'"
   }
 
 }
