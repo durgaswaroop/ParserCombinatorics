@@ -50,4 +50,20 @@ object ParserCombinator {
 
     Parser(innerFunc)
   }
+
+  /**
+    * Run a function on the Parser. If the parser is successful, run the
+    * function on the matched output or else fail.
+    */
+  def map[T1, T2](parser: Parser[T1], func: T1 => T2): Parser[T2] = {
+    def innerFunc(input: String): Either[String, (T2, String)] = {
+      val parserOutput = runParser(input, parser)
+      parserOutput match {
+        case Right((matched, remaining)) => Right(func(matched), remaining)
+        case Left(value)                 => Left(value)
+      }
+    }
+    Parser(innerFunc)
+  }
+
 }
