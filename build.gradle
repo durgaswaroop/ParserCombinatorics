@@ -1,0 +1,16 @@
+apply plugin: 'scala'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main.scala.srcDirs = ['src']
+    test.scala.srcDirs = ['test']
+}
+
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.12.6'
+    testCompile "org.scalatest:scalatest_2.12:3.0.5"
+}
