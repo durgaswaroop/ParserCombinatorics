@@ -1,13 +1,12 @@
-case class Parser(func: String => Either[String, (String, String)])
+case class Parser[T](func: String => Either[String, (String, T)])
 
 object BasicParser {
-  def parseChar(char: String)(
-      input: String): Either[String, (String, String)] = {
+  def parseChar(char: Char)(input: String): Either[String, (String, Char)] = {
     if (input == null || input.isEmpty) Left("No more input")
-    else if (input.startsWith(char)) Right(input.substring(char.length), char)
+    else if (input(0) == char) Right(input.substring(1), char)
     else Left("Didn't match")
   }
 
-  def runParser(input: String, parser: Parser) = parser.func(input)
+  def runParser[T](input: String, parser: Parser[T]) = parser.func(input)
 
 }
