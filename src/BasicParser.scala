@@ -1,10 +1,10 @@
-case class Parser[T](func: String => Either[String, (String, T)])
+case class Parser[T](func: String => Either[String, (T, String)])
 
 object BasicParser {
   // Parse a character char in the input.
-  def parseChar(char: Char)(input: String): Either[String, (String, Char)] = {
+  def parseChar(char: Char)(input: String): Either[String, (Char, String)] = {
     if (input == null || input.isEmpty) Left("No more input")
-    else if (input(0) == char) Right(input.substring(1), char)
+    else if (input(0) == char) Right(char, input.substring(1))
     else Left(s"Expecting '$char'. Got '${input(0)}'")
   }
 

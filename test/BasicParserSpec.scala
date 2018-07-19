@@ -10,7 +10,7 @@ class BasicParserSpec extends TestBase("BasicParser") {
   it should
     "return remaining input & the matched character if the char is matched" in {
     val pcharA = parseChar('A') _
-    pcharA("A").merge shouldBe ("", 'A')
+    pcharA("A").merge shouldBe ('A', "")
 
   }
 
@@ -27,7 +27,7 @@ class BasicParserSpec extends TestBase("BasicParser") {
 
   it should "run the parser on the given input" in {
     val parseH = Parser(parseChar('H'))
-    runParser("Hello", parseH).merge shouldBe ("ello", 'H')
+    runParser("Hello", parseH).merge shouldBe ('H', "ello")
     runParser("hola", parseH).merge shouldBe "Expecting 'H'. Got 'h'"
     runParser("", parseH).merge shouldBe "No more input"
   }
