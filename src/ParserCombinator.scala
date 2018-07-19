@@ -31,4 +31,23 @@ object ParserCombinator {
     Parser(innerFunc)
   }
 
+  /**
+    * 1. Run the first parser on the input data
+    * 2. On Success, return the parser value and the remaining input
+    * 3. If first parser fails, run the second parser on the original input
+    * and return incase of success or failure
+    *
+    */
+  def orElse[T](parser1: Parser[T], parser2: Parser[T]): Parser[T] = {
+
+    def innerFunc(input: String) = {
+      val firstParse = runParser(input, parser1)
+      firstParse match {
+        case Right(_) => firstParse
+        case Left(_)  => runParser(input, parser2)
+      }
+    }
+
+    Parser(innerFunc)
+  }
 }
