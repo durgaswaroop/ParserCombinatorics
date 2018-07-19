@@ -4,7 +4,6 @@ import org.scalatest.EitherValues
 class BasicParserSpec extends TestBase("BasicParser") {
 
   it should "return a Either object for the input" in {
-    EitherValues
     parseChar("a")("abc") shouldBe an[Either[_, _]]
   }
 
@@ -22,6 +21,12 @@ class BasicParserSpec extends TestBase("BasicParser") {
   it should "return No more input for empty and null string inputs" in {
     parseChar("H")("") === "No more input"
     parseChar("H")(null) === "No more input"
+  }
+
+  it should "run the parser on the given input" in {
+    val parserHel = Parser(parseChar("Hel"))
+    runParser("Hello", parserHel) === ("lo", "Hel")
+    runParser("Hola", parserHel) === "Didn't match"
   }
 
 }
