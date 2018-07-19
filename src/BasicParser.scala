@@ -1,4 +1,4 @@
-class BasicParser {
+object BasicParser {
   def parseChar(char: String)(
       input: String): Either[String, (String, String)] = {
     if (input == null || input.isEmpty) Left("No more input")
