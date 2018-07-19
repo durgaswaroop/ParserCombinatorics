@@ -6,23 +6,23 @@ class BasicParserSpec extends TestBase("BasicParser") {
 
   it should "return a Either object for the input" in {
     EitherValues
-    basicParser.parseChar("abc", "a") shouldBe an[Either[_, _]]
+    basicParser.parseChar("a")("abc") shouldBe an[Either[_, _]]
   }
 
   it should
     "return remaining input & the matched character if the char is matched" in {
-    basicParser.parseChar("A", "A") === ("", "A")
-    basicParser.parseChar("hello", "he") === ("llo", "he")
+    basicParser.parseChar("A")("A") === ("", "A")
+    basicParser.parseChar("he")("hello") === ("llo", "he")
 
   }
 
   it should "return a failure msg in case of no match" in {
-    basicParser.parseChar("AB", "C") === "Didn't match"
+    basicParser.parseChar("C")("AB") === "Didn't match"
   }
 
   it should "return No more input for empty and null string inputs" in {
-    basicParser.parseChar("", "H") === "No more input"
-    basicParser.parseChar(null, "H") === "No more input"
+    basicParser.parseChar("H")("") === "No more input"
+    basicParser.parseChar("H")(null) === "No more input"
   }
 
 }
