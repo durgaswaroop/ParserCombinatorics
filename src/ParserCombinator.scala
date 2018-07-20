@@ -22,4 +22,6 @@ object ParserCombinator {
 
   def parseLowerCase: Parser[Char] = anyOf(('a' to 'z').toList)
 
+  def parseDigit: Parser[Char] = anyOf(('0' to '9').toList)
+
 }

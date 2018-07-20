@@ -44,8 +44,13 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
   }
 
   it should "parse lowercase characters" in {
-    val chars = ('a' to 'z').toList
     runParser("abc", parseLowerCase) shouldBe Right('a', "bc")
+    runParser("zxg", parseLowerCase) shouldBe Right('z', "xg")
+  }
+
+  it should "parse digits" in {
+    runParser("123", parseDigit) shouldBe Right('1', "23")
+    runParser("323", parseDigit) shouldBe Right('3', "23")
   }
 
 }
