@@ -1,4 +1,4 @@
-object BasicParser {
+object ParserCombinator {
   // Parse a character char in the input.
   def parseChar(char: Char): Parser[Char] = {
     def innerFunc(input: String) = {
@@ -14,5 +14,12 @@ object BasicParser {
 
   // Returns parser1 <|> or parser2 <|> parser3 ...
   def choice[T](parsers: List[Parser[T]]): Parser[T] = parsers.reduce(_ <|> _)
+
+  def anyOf(chars: List[Char]): Parser[Char] = {
+    val parsers: List[Parser[Char]] = chars map parseChar
+    choice(parsers)
+  }
+
+  def parseLowerCase: Parser[Char] = anyOf(('a' to 'z').toList)
 
 }

@@ -1,4 +1,4 @@
-import BasicParser._
+import ParserCombinator._
 
 class ParserSpec extends TestBase("Parser") {
   val parserA = parseChar('A')

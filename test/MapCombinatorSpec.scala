@@ -1,4 +1,4 @@
-import BasicParser._
+import ParserCombinator._
 
 class MapCombinatorSpec extends TestBase("MapCombinator") {
   val parserA: Parser[Char] = parseChar('A')

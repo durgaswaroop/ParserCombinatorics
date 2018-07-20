@@ -1,6 +1,6 @@
-import BasicParser._
+import ParserCombinator._
 
-class BasicParserSpec extends TestBase("BasicParser") {
+class ParserCombinatorSpec extends TestBase("ParseCombinator") {
 
   val parserA: Parser[Char] = parseChar('A')
   val parserB: Parser[Char] = parseChar('B')
@@ -14,7 +14,6 @@ class BasicParserSpec extends TestBase("BasicParser") {
   it should
     "return remaining input & the matched character if the char is matched" in {
     runParser("ABC", parserA) shouldBe Right('A', "BC")
-
   }
 
   it should "return a failure msg in case of no match" in {
@@ -36,6 +35,17 @@ class BasicParserSpec extends TestBase("BasicParser") {
     val combinedParser = choice(List(parserA, parserB, parserC))
     runParser("ABC", combinedParser) shouldBe Right('A', "BC")
     runParser("BC", combinedParser) shouldBe Right('B', "C")
+  }
+
+  it should "build a parser to match any char with 'anyOf'" in {
+    val chars = ('a' to 'z').toList
+    val anyCharParser = anyOf(chars)
+    runParser("abcd", anyCharParser) shouldBe Right('a', "bcd")
+  }
+
+  it should "parse lowercase characters" in {
+    val chars = ('a' to 'z').toList
+    runParser("abc", parseLowerCase) shouldBe Right('a', "bc")
   }
 
 }

@@ -1,4 +1,4 @@
-import BasicParser._
+import ParserCombinator._
 
 class AndThenCombinatorSpec extends TestBase("AndThenCombinator") {
 
