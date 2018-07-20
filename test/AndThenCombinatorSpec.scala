@@ -1,11 +1,10 @@
 import BasicParser._
-import ParserCombinator._
 
 class AndThenCombinatorSpec extends TestBase("AndThenCombinator") {
 
   val parserA: Parser[Char] = Parser(parseChar('A'))
   val parserB: Parser[Char] = Parser(parseChar('B'))
-  val andThenCombined: Parser[(Char, Char)] = andThen(parserA, parserB)
+  val andThenCombined: Parser[(Char, Char)] = parserA >> parserB
 
   it should "return output of parser2 when parser1 is successful" in {
     runParser("ABCD", andThenCombined) shouldBe Right(('A', 'B'), "CD")

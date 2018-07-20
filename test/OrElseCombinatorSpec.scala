@@ -1,10 +1,9 @@
 import BasicParser.{parseChar, runParser}
-import ParserCombinator.orElse
 
 class OrElseCombinatorSpec extends TestBase("OrElseCombinatorSpec") {
   val parserA: Parser[Char] = Parser(parseChar('A'))
   val parserB: Parser[Char] = Parser(parseChar('B'))
-  val orElseCombined: Parser[Char] = orElse(parserA, parserB)
+  val orElseCombined: Parser[Char] = parserA <|> parserB
 
   it should "return if the first parser passes" in {
     runParser("ABC", orElseCombined) shouldBe Right('A', "BC")

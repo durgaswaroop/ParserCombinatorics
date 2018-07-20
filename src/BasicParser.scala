@@ -1,5 +1,3 @@
-case class Parser[T](func: String => Either[String, (T, String)])
-
 object BasicParser {
   // Parse a character char in the input.
   def parseChar(char: Char)(input: String): Either[String, (Char, String)] = {
