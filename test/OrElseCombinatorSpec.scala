@@ -1,4 +1,4 @@
-import BasicParser.{parseChar, runParser}
+import BasicParser._
 
 class OrElseCombinatorSpec extends TestBase("OrElseCombinatorSpec") {
   val parserA: Parser[Char] = Parser(parseChar('A'))

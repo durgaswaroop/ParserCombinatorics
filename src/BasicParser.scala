@@ -9,4 +9,7 @@ object BasicParser {
   // Runs the given parser on the passed input string
   def runParser[T](input: String, parser: Parser[T]) = parser.func(input)
 
+  // Returns parser1 <|> or parser2 <|> parser3 ...
+  def choice[T](parsers: List[Parser[T]]): Parser[T] = parsers.reduce(_ <|> _)
+
 }

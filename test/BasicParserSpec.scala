@@ -2,6 +2,10 @@ import BasicParser._
 
 class BasicParserSpec extends TestBase("BasicParser") {
 
+  val parserA = Parser(parseChar('A'))
+  val parserB = Parser(parseChar('B'))
+  val parserC = Parser(parseChar('C'))
+
   it should "return a Either object for the input" in {
     val pchara = parseChar('a') _
     pchara("abc") shouldBe an[Either[String, (String, Char)]]
@@ -30,6 +34,12 @@ class BasicParserSpec extends TestBase("BasicParser") {
     runParser("Hello", parseH).merge shouldBe ('H', "ello")
     runParser("hola", parseH).merge shouldBe "Expecting 'H'. Got 'h'"
     runParser("", parseH).merge shouldBe "No more input"
+  }
+
+  it should "combine all parsers with 'choice'" in {
+    val combinedParser = choice(List(parserA, parserB, parserC))
+    runParser("ABC", combinedParser) shouldBe Right('A', "BC")
+    runParser("BC", combinedParser) shouldBe Right('B', "C")
   }
 
 }
