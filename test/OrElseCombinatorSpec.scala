@@ -3,21 +3,34 @@ import BasicParser.{parseChar, runParser}
 class OrElseCombinatorSpec extends TestBase("OrElseCombinatorSpec") {
   val parserA: Parser[Char] = Parser(parseChar('A'))
   val parserB: Parser[Char] = Parser(parseChar('B'))
-  val orElseCombined: Parser[Char] = parserA <|> parserB
+  val parserC: Parser[Char] = Parser(parseChar('C'))
+
+  val parserAOrB: Parser[Char] = parserA <|> parserB
+  val parserAOrBOrC: Parser[Char] = parserA <|> parserB <|> parserC
 
   it should "return if the first parser passes" in {
-    runParser("ABC", orElseCombined) shouldBe Right('A', "BC")
+    runParser("ABC", parserAOrB) shouldBe Right('A', "BC")
   }
 
   it should "return the output of second parser if first parsers fails" in {
-    runParser("BC", orElseCombined) shouldBe Right('B', "C")
-    runParser("BZZ", orElseCombined) shouldBe Right('B', "ZZ")
-    runParser("CB", orElseCombined) shouldBe Left("Expecting 'B'. Got 'C'")
-    runParser("CZZ", orElseCombined) shouldBe Left("Expecting 'B'. Got 'C'")
+    runParser("BC", parserAOrB) shouldBe Right('B', "C")
+    runParser("BZZ", parserAOrB) shouldBe Right('B', "ZZ")
+    runParser("CB", parserAOrB) shouldBe Left("Expecting 'B'. Got 'C'")
+    runParser("CZZ", parserAOrB) shouldBe Left("Expecting 'B'. Got 'C'")
   }
 
   it should "return that no more chars are present for empty string" in {
-    runParser("", orElseCombined) shouldBe Left("No more input")
+    runParser("", parserAOrB) shouldBe Left("No more input")
+  }
+
+  it should "succeed for three parsers in series for input ABC" in {
+    runParser("A", parserAOrBOrC) shouldBe Right('A', "")
+    runParser("B", parserAOrBOrC) shouldBe Right('B', "")
+    runParser("C", parserAOrBOrC) shouldBe Right('C', "")
+  }
+
+  it should "fail for three parsers in series for input XYZ" in {
+    runParser("XYZ", parserAOrBOrC) shouldBe Left("Expecting 'C'. Got 'X'")
   }
 
 }
