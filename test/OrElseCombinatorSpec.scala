@@ -12,10 +12,13 @@ class OrElseCombinatorSpec extends TestBase("OrElseCombinatorSpec") {
 
   it should "return the output of second parser if first parsers fails" in {
     runParser("BC", orElseCombined) shouldBe Right('B', "C")
+    runParser("BZZ", orElseCombined) shouldBe Right('B', "ZZ")
     runParser("CB", orElseCombined) shouldBe Left("Expecting 'B'. Got 'C'")
+    runParser("CZZ", orElseCombined) shouldBe Left("Expecting 'B'. Got 'C'")
   }
 
   it should "return that no more chars are present for empty string" in {
     runParser("", orElseCombined) shouldBe Left("No more input")
   }
+
 }
