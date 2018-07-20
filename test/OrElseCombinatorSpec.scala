@@ -1,9 +1,9 @@
 import BasicParser._
 
 class OrElseCombinatorSpec extends TestBase("OrElseCombinatorSpec") {
-  val parserA: Parser[Char] = Parser(parseChar('A'))
-  val parserB: Parser[Char] = Parser(parseChar('B'))
-  val parserC: Parser[Char] = Parser(parseChar('C'))
+  val parserA: Parser[Char] = parseChar('A')
+  val parserB: Parser[Char] = parseChar('B')
+  val parserC: Parser[Char] = parseChar('C')
 
   val parserAOrB: Parser[Char] = parserA <|> parserB
   val parserAOrBOrC: Parser[Char] = parserA <|> parserB <|> parserC

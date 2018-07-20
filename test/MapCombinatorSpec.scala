@@ -1,8 +1,8 @@
 import BasicParser._
 
 class MapCombinatorSpec extends TestBase("MapCombinator") {
-  val parserA: Parser[Char] = Parser(parseChar('A'))
-  val parserB: Parser[Char] = Parser(parseChar('B'))
+  val parserA: Parser[Char] = parseChar('A')
+  val parserB: Parser[Char] = parseChar('B')
 
   val isA: Char => Boolean = (x: Char) => x == 'A'
   val sameChar: Char => Char = (x: Char) => x

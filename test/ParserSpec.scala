@@ -1,12 +1,12 @@
 import BasicParser._
 
 class ParserSpec extends TestBase("Parser") {
-  val parserA = Parser(parseChar('A'))
-  val parserB = Parser(parseChar('B'))
-  val parserC = Parser(parseChar('C'))
+  val parserA = parseChar('A')
+  val parserB = parseChar('B')
+  val parserC = parseChar('C')
 
-  val parser1 = Parser(parseChar('1'))
-  val parser2 = Parser(parseChar('2'))
+  val parser1 = parseChar('1')
+  val parser2 = parseChar('2')
 
   it should "parse correctly when I combine orElse with andThen" in {
     val aAndThenBorC = parserA >> (parserB <|> parserC)
