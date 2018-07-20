@@ -10,7 +10,7 @@ case class Parser[T](func: String => Either[String, (T, String)]) {
     *   - If there is a failure, just return from here too.
     * 3. If both the parsers succeed, return a tuple of both the parser values.
     */
-  def >>(other: Parser[T]): Parser[(T, T)] = {
+  def >>[U](other: Parser[U]): Parser[(T, U)] = {
     def innerFunc(input: String) = {
       val firstParse = runParser(input, this)
 
