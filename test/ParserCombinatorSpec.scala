@@ -87,20 +87,20 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
   }
 
   it should "parse any number of A's in the input with many" in {
-    val manyA = many(parserA)
+    val manyA = **(parserA)
     runParser("AABCD", manyA) shouldBe Right("AA", "BCD")
     runParser("BCD", manyA) shouldBe Right("", "BCD")
   }
 
   it should "parse One or more chars in the input" in {
-    val atleastOneA = many1(parserA)
+    val atleastOneA = ++(parserA)
     runParser("AAABCD", atleastOneA) shouldBe Right(("AAA", "BCD"))
     runParser("ABCD", atleastOneA) shouldBe Right(("A", "BCD"))
     runParser("BCD", atleastOneA) shouldBe Left("Expecting 'A'. Got 'B'")
   }
 
   it should "parse a character if it is present or not with opt" in {
-    val optionalA = opt(parserA)
+    val optionalA = ??(parserA)
     runParser("ABC", optionalA) shouldBe Right(("A", "BC"))
     runParser("BC", optionalA) shouldBe Right(("", "BC"))
   }

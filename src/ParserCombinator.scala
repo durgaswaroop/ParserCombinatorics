@@ -59,7 +59,7 @@ object ParserCombinator {
   }
 
   // Zero or more
-  def many[T](parser: Parser[T]): Parser[String] = {
+  def **[T](parser: Parser[T]): Parser[String] = {
     def innerFunc(input: String) = {
       Right(parseZeroOrMore(parser, input))
     }
@@ -67,7 +67,7 @@ object ParserCombinator {
     Parser(innerFunc) |>> (_.mkString)
   }
 
-  def many1[T](parser: Parser[T]): Parser[String] = {
+  def ++[T](parser: Parser[T]): Parser[String] = {
     def innerFunc(input: String) = {
       val firstRun = runParser(input, parser)
       firstRun match {
@@ -80,7 +80,7 @@ object ParserCombinator {
     Parser(innerFunc) |>> (_.mkString)
   }
 
-  def opt[T](parser: Parser[T]): Parser[String] = {
+  def ??[T](parser: Parser[T]): Parser[String] = {
     def innerFunc(input: String) = {
       runParser(input, parser) match {
         case Left(_)      => Right("", input)
