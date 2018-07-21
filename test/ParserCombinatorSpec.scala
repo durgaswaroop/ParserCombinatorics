@@ -86,4 +86,10 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     parseZeroOrMore(parserB, "AAABCD") shouldBe (List(), "AAABCD")
   }
 
+  it should "parse any number of A's in the input with many" in {
+    val manyA = many(parserA)
+    runParser("AABCD", manyA) shouldBe Right("AA", "BCD")
+    runParser("BCD", manyA) shouldBe Right("", "BCD")
+  }
+
 }

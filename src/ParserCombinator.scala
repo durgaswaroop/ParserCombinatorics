@@ -58,4 +58,12 @@ object ParserCombinator {
     }
   }
 
+  // Zero or more
+  def many[T](parser: Parser[T]): Parser[String] = {
+    def innerFunc(input: String) = {
+      Right(parseZeroOrMore(parser, input))
+    }
+    Parser(innerFunc) |>> (_.mkString)
+  }
+
 }
