@@ -46,4 +46,16 @@ object ParserCombinator {
   def parseString(stringToMatch: String): Parser[String] =
     allOf(stringToMatch.toList) |>> (_.mkString)
 
+  def parseZeroOrMore[T](parser: Parser[T],
+                         input: String): (List[T], String) = {
+    val firstRun = runParser(input, parser)
+    firstRun match {
+      case Left(_) => (List.empty, input)
+      case Right((matched, remaining)) =>
+        val (nextValue, nextRemaining) = parseZeroOrMore(parser, remaining)
+        val values = matched :: nextValue
+        (values, nextRemaining)
+    }
+  }
+
 }

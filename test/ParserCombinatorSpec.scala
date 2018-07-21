@@ -35,29 +35,29 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
 
   it should "combine all parsers with 'choice'" in {
     val combinedParser = choice(parserList)
-    runParser("ABC", combinedParser) shouldBe Right('A', "BC")
-    runParser("BC", combinedParser) shouldBe Right('B', "C")
+    runParser("ABC", combinedParser) shouldBe Right(('A', "BC"))
+    runParser("BC", combinedParser) shouldBe Right(('B', "C"))
   }
 
   it should "build a parser to match any char with 'anyOf'" in {
     val chars = ('a' to 'z').toList
     val anyCharParser = anyOf(chars)
-    runParser("abcd", anyCharParser) shouldBe Right('a', "bcd")
+    runParser("abcd", anyCharParser) shouldBe Right(('a', "bcd"))
   }
 
   it should "parse lowercase characters" in {
-    runParser("abc", parseLowerCase) shouldBe Right('a', "bc")
-    runParser("zxg", parseLowerCase) shouldBe Right('z', "xg")
+    runParser("abc", parseLowerCase) shouldBe Right(('a', "bc"))
+    runParser("zxg", parseLowerCase) shouldBe Right(('z', "xg"))
   }
 
   it should "parse digits" in {
-    runParser("123", parseDigit) shouldBe Right('1', "23")
-    runParser("323", parseDigit) shouldBe Right('3', "23")
+    runParser("123", parseDigit) shouldBe Right(('1', "23"))
+    runParser("323", parseDigit) shouldBe Right(('3', "23"))
   }
 
   it should "parse input sequentially with the given parsers" in {
     val sequentialParser = sequence(parserList)
-    val expected = Right(List('A', 'B', 'C', 'H'), "XYZ")
+    val expected = Right((List('A', 'B', 'C', 'H'), "XYZ"))
     runParser("ABCHXYZ", sequentialParser) shouldBe expected
   }
 
@@ -66,20 +66,24 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     val input = "Naruto Uzumaki"
 
     val parser = ParserCombinator.allOf(stringToMatch)
-    val expected = Right(List('N', 'a', 'r', 'u', 't', 'o'), " Uzumaki")
+    val expected = Right((List('N', 'a', 'r', 'u', 't', 'o'), " Uzumaki"))
 
     runParser(input, parser) shouldBe expected
   }
 
   it should "parse the given string in the input and return a string" in {
-    val stringToMatch = "Boruto"
-    val input = "Boruto Uzumaki"
-
     val parser1 = parseString("Boruto")
     val parser2 = parseString("ABC")
 
-    runParser("Boruto Uzumaki", parser1) shouldBe Right("Boruto", " Uzumaki")
-    runParser("ABC|DE", parser2) shouldBe Right("ABC", "|DE")
+    runParser("Boruto Uzumaki", parser1) shouldBe Right(("Boruto", " Uzumaki"))
+    runParser("ABC|DE", parser2) shouldBe Right(("ABC", "|DE"))
+  }
+
+  it should "parse any number of A's in the input" in {
+    parseZeroOrMore(parserA, "AAABCD") shouldBe (List('A', 'A', 'A'), "BCD")
+    parseZeroOrMore(parserA, "ABCD") shouldBe (List('A'), "BCD")
+    parseZeroOrMore(parserA, "BCD") shouldBe (List(), "BCD")
+    parseZeroOrMore(parserB, "AAABCD") shouldBe (List(), "AAABCD")
   }
 
 }
