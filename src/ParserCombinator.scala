@@ -80,4 +80,14 @@ object ParserCombinator {
     Parser(innerFunc) |>> (_.mkString)
   }
 
+  def opt[T](parser: Parser[T]): Parser[String] = {
+    def innerFunc(input: String) = {
+      runParser(input, parser) match {
+        case Left(_)      => Right("", input)
+        case Right(value) => Right(value)
+      }
+    }
+    Parser(innerFunc) |>> (_.toString)
+  }
+
 }

@@ -99,4 +99,10 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     runParser("BCD", atleastOneA) shouldBe Left("Expecting 'A'. Got 'B'")
   }
 
+  it should "parse a character if it is present or not with opt" in {
+    val optionalA = opt(parserA)
+    runParser("ABC", optionalA) shouldBe Right(("A", "BC"))
+    runParser("BC", optionalA) shouldBe Right(("", "BC"))
+  }
+
 }
