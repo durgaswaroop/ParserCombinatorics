@@ -24,4 +24,17 @@ object ParserCombinator {
 
   def parseDigit: Parser[Char] = anyOf(('0' to '9').toList)
 
+  def sequence[T](parsers: List[Parser[T]]): Parser[List[T]] = {
+
+    def concatMatches(parser1: Parser[List[T]],
+                      parser2: Parser[List[T]]): Parser[List[T]] = {
+      val func = (tuple: (List[T], List[T])) => tuple._1 ++ tuple._2
+      parser1 >> parser2 |>> func
+    }
+
+    def listMapper = (value: T) => List(value)
+
+    parsers.map(_ |>> listMapper).reduce(concatMatches)
+  }
+
 }
