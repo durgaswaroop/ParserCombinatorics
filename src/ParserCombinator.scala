@@ -90,4 +90,9 @@ object ParserCombinator {
     Parser(innerFunc) |>> (_.toString)
   }
 
+  def parseWhiteSpace: Parser[String] = {
+    val whiteSpaceChars = anyOf(List(' ', '\t', '\n', '\r'))
+    **(whiteSpaceChars)
+  }
+
 }

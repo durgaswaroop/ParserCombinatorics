@@ -105,4 +105,13 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     runParser("BC", optionalA) shouldBe Right(("", "BC"))
   }
 
+  it should "parse whitespace in the input string" in {
+    runParser("  abc", parseWhiteSpace) shouldBe Right(("  ", "abc"))
+    runParser("abc", parseWhiteSpace) shouldBe Right(("", "abc"))
+    runParser("    ", parseWhiteSpace) shouldBe Right(("    ", ""))
+    runParser("\tabc", parseWhiteSpace) shouldBe Right(("\t", "abc"))
+    runParser("\t  abc", parseWhiteSpace) shouldBe Right(("\t  ", "abc"))
+    runParser("\nabc", parseWhiteSpace) shouldBe Right(("\n", "abc"))
+  }
+
 }
