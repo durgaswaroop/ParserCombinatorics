@@ -92,4 +92,11 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     runParser("BCD", manyA) shouldBe Right("", "BCD")
   }
 
+  it should "parse One or more chars in the input" in {
+    val atleastOneA = many1(parserA)
+    runParser("AAABCD", atleastOneA) shouldBe Right(("AAA", "BCD"))
+    runParser("ABCD", atleastOneA) shouldBe Right(("A", "BCD"))
+    runParser("BCD", atleastOneA) shouldBe Left("Expecting 'A'. Got 'B'")
+  }
+
 }
