@@ -6,6 +6,7 @@ object ParserCombinator {
       else if (input(0) == char) Right(char, input.substring(1))
       else Left(s"Expecting '$char'. Got '${input(0)}'")
     }
+
     Parser(innerFunc)
   }
 
@@ -36,5 +37,13 @@ object ParserCombinator {
 
     parsers.map(_ |>> listMapper).reduce(concatMatches)
   }
+
+  def allOf(chars: List[Char]): Parser[List[Char]] = {
+    val parsers: List[Parser[Char]] = chars map parseChar
+    sequence(parsers)
+  }
+
+  def parseString(stringToMatch: String): Parser[String] =
+    allOf(stringToMatch.toList) |>> (_.mkString)
 
 }

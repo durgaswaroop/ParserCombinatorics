@@ -61,4 +61,25 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     runParser("ABCHXYZ", sequentialParser) shouldBe expected
   }
 
+  it should "parse given string as list of chars in the input with allOf" in {
+    val stringToMatch = "Naruto".toList
+    val input = "Naruto Uzumaki"
+
+    val parser = ParserCombinator.allOf(stringToMatch)
+    val expected = Right(List('N', 'a', 'r', 'u', 't', 'o'), " Uzumaki")
+
+    runParser(input, parser) shouldBe expected
+  }
+
+  it should "parse the given string in the input and return a string" in {
+    val stringToMatch = "Boruto"
+    val input = "Boruto Uzumaki"
+
+    val parser1 = parseString("Boruto")
+    val parser2 = parseString("ABC")
+
+    runParser("Boruto Uzumaki", parser1) shouldBe Right("Boruto", " Uzumaki")
+    runParser("ABC|DE", parser2) shouldBe Right("ABC", "|DE")
+  }
+
 }
