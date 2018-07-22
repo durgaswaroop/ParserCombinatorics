@@ -65,4 +65,20 @@ case class Parser[T](func: String => Either[String, (T, String)]) {
     Parser(innerFunc)
   }
 
+  def >>![U](other: Parser[U]): Parser[T] = {
+    def innerFunc(input: String) = {
+      val firstParse = runParser(input, this)
+      firstParse match {
+        case Left(value) => Left(value)
+        case Right((matched, remaining)) =>
+          val secondParse = runParser(remaining, other)
+          secondParse match {
+            case Left(value) => Left(value)
+            case Right(_)    => Right(matched, remaining)
+          }
+      }
+    }
+    Parser(innerFunc)
+  }
+
 }
