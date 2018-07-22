@@ -75,8 +75,8 @@ case class Parser[T](func: String => Either[String, (T, String)]) {
         case Right((matched, remaining)) =>
           val secondParse = runParser(remaining, other)
           secondParse match {
-            case Left(value) => Left(value)
-            case Right(_)    => Right(matched, remaining)
+            case Left(value)                 => Left(value)
+            case Right((_, secondRemaining)) => Right(matched, secondRemaining)
           }
       }
     }

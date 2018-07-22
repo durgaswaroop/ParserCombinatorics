@@ -95,4 +95,9 @@ object ParserCombinator {
     **(whiteSpaceChars)
   }
 
+  def between[U, T, V](parser1: Parser[U],
+                       parser2: Parser[T],
+                       parser3: Parser[V]): Parser[T] =
+    parser1 !>> parser2 >>! parser3
+
 }

@@ -1,4 +1,4 @@
-import ParserCombinator._
+import ParserCombinator.{allOf => parseAll, between => inBetween, _}
 
 class ParserCombinatorSpec extends TestBase("ParseCombinator") {
 
@@ -65,7 +65,7 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     val stringToMatch = "Naruto".toList
     val input = "Naruto Uzumaki"
 
-    val parser = ParserCombinator.allOf(stringToMatch)
+    val parser = parseAll(stringToMatch)
     val expected = Right((List('N', 'a', 'r', 'u', 't', 'o'), " Uzumaki"))
 
     runParser(input, parser) shouldBe expected
@@ -116,7 +116,7 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
 
   it should "match a parser but throw it away for >>!" in {
     val parseAButThrowAwayB = parserA >>! parserB
-    runParser("ABC", parseAButThrowAwayB) shouldBe Right(('A', "BC"))
+    runParser("ABC", parseAButThrowAwayB) shouldBe Right(('A', "C"))
     runParser("AC", parseAButThrowAwayB) shouldBe Left("Expecting 'B'. Got 'C'")
     runParser("C", parseAButThrowAwayB) shouldBe Left("Expecting 'A'. Got 'C'")
   }
@@ -128,6 +128,32 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
       "Expecting 'B'. Got 'C'")
     runParser("C", parseAAndBButThrowAwayA) shouldBe Left(
       "Expecting 'A'. Got 'C'")
+  }
+
+  it should "match string between quotes" in {
+    val pDoubleQuote = parseChar('"')
+    val pSingleQuote = parseChar(''')
+    val parseLower = **(parseLowerCase) // one or more lowercase characters
+
+    val betweenParser1 = inBetween(pDoubleQuote, parseLower, pDoubleQuote)
+    val input1 = "\"helloworld\""
+    runParser(input1, betweenParser1) shouldBe Right(("helloworld", ""))
+
+    val betweenParser2 = inBetween(pSingleQuote, parseLower, pSingleQuote)
+    val input2 = "'helloworld'"
+    runParser(input2, betweenParser2) shouldBe Right(("helloworld", ""))
+  }
+
+  it should "match everything inside a paragraph tag" in {
+    val pTagStart = parseString("<p>")
+    val pTagEnd = parseString("</p>")
+    val pWhiteSpaceAndLowerCase = **(anyOf(('a' to 'z').toList ++ List(' ')))
+
+    val betweenParser = inBetween(pTagStart, pWhiteSpaceAndLowerCase, pTagEnd)
+
+    val input = "<p>this is html</p>"
+
+    runParser(input, betweenParser) shouldBe Right(("this is html", ""))
   }
 
 }
