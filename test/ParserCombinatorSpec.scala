@@ -121,4 +121,13 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     runParser("C", parseAButThrowAwayB) shouldBe Left("Expecting 'A'. Got 'C'")
   }
 
+  it should "match a parser but throw it away for !>>" in {
+    val parseAAndBButThrowAwayA = parserA !>> parserB
+    runParser("ABC", parseAAndBButThrowAwayA) shouldBe Right(('B', "C"))
+    runParser("AC", parseAAndBButThrowAwayA) shouldBe Left(
+      "Expecting 'B'. Got 'C'")
+    runParser("C", parseAAndBButThrowAwayA) shouldBe Left(
+      "Expecting 'A'. Got 'C'")
+  }
+
 }
