@@ -59,15 +59,15 @@ object ParserCombinator {
   }
 
   // Zero or more
-  def **[T](parser: Parser[T]): Parser[String] = {
+  def **[T](parser: Parser[T]): Parser[List[T]] = {
     def innerFunc(input: String) = {
       Right(parseZeroOrMore(parser, input))
     }
 
-    Parser(innerFunc) |>> (_.mkString)
+    Parser(innerFunc) //|>> (_.mkString)
   }
 
-  def ++[T](parser: Parser[T]): Parser[String] = {
+  def ++[T](parser: Parser[T]): Parser[List[T]] = {
     def innerFunc(input: String) = {
       val firstRun = runParser(input, parser)
       firstRun match {
@@ -77,22 +77,24 @@ object ParserCombinator {
           Right(matched :: nextMatched, nextRemaining)
       }
     }
-    Parser(innerFunc) |>> (_.mkString)
+
+    Parser(innerFunc) //|>> (_.mkString)
   }
 
-  def ??[T](parser: Parser[T]): Parser[String] = {
+  def ??[T](parser: Parser[T]): Parser[List[T]] = {
     def innerFunc(input: String) = {
       runParser(input, parser) match {
-        case Left(_)      => Right("", input)
-        case Right(value) => Right(value)
+        case Left(_)       => Right(List.empty[T], input)
+        case Right((m, r)) => Right((List(m), r))
       }
     }
-    Parser(innerFunc) |>> (_.toString)
+
+    Parser(innerFunc) //|>> (_.toString)
   }
 
   def parseWhiteSpace: Parser[String] = {
     val whiteSpaceChars = anyOf(List(' ', '\t', '\n', '\r'))
-    **(whiteSpaceChars)
+    **(whiteSpaceChars) |>> (_.mkString)
   }
 
   def between[U, T, V](parser1: Parser[U],

@@ -88,21 +88,21 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
 
   it should "parse any number of A's in the input with many" in {
     val manyA = **(parserA)
-    runParser("AABCD", manyA) shouldBe Right("AA", "BCD")
-    runParser("BCD", manyA) shouldBe Right("", "BCD")
+    runParser("AABCD", manyA) shouldBe Right("AA".toList, "BCD")
+    runParser("BCD", manyA) shouldBe Right("".toList, "BCD")
   }
 
   it should "parse One or more chars in the input" in {
     val atleastOneA = ++(parserA)
-    runParser("AAABCD", atleastOneA) shouldBe Right(("AAA", "BCD"))
-    runParser("ABCD", atleastOneA) shouldBe Right(("A", "BCD"))
+    runParser("AAABCD", atleastOneA) shouldBe Right(("AAA".toList, "BCD"))
+    runParser("ABCD", atleastOneA) shouldBe Right(("A".toList, "BCD"))
     runParser("BCD", atleastOneA) shouldBe Left("Expecting 'A'. Got 'B'")
   }
 
   it should "parse a character if it is present or not with opt" in {
     val optionalA = ??(parserA)
-    runParser("ABC", optionalA) shouldBe Right(("A", "BC"))
-    runParser("BC", optionalA) shouldBe Right(("", "BC"))
+    runParser("ABC", optionalA) shouldBe Right(("A".toList, "BC"))
+    runParser("BC", optionalA) shouldBe Right(("".toList, "BC"))
   }
 
   it should "parse whitespace in the input string" in {
@@ -132,16 +132,16 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
 
   it should "match string between quotes" in {
     val pDoubleQuote = parseChar('"')
-    val pSingleQuote = parseChar(''')
+    val pSingleQuote = parseChar('\'')
     val parseLower = **(parseLowerCase) // one or more lowercase characters
 
     val betweenParser1 = inBetween(pDoubleQuote, parseLower, pDoubleQuote)
     val input1 = "\"helloworld\""
-    runParser(input1, betweenParser1) shouldBe Right(("helloworld", ""))
+    runParser(input1, betweenParser1) shouldBe Right(("helloworld".toList, ""))
 
     val betweenParser2 = inBetween(pSingleQuote, parseLower, pSingleQuote)
     val input2 = "'helloworld'"
-    runParser(input2, betweenParser2) shouldBe Right(("helloworld", ""))
+    runParser(input2, betweenParser2) shouldBe Right(("helloworld".toList, ""))
   }
 
   it should "match everything inside a paragraph tag" in {
@@ -153,7 +153,7 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
 
     val input = "<p>this is html</p>"
 
-    runParser(input, betweenParser) shouldBe Right(("this is html", ""))
+    runParser(input, betweenParser) shouldBe Right(("this is html".toList, ""))
   }
 
 }
