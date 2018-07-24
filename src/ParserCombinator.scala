@@ -1,3 +1,5 @@
+import javax.swing.JToolBar.Separator
+
 object ParserCombinator {
   // Parse a character char in the input.
   def parseChar(char: Char): Parser[Char] = {
@@ -102,8 +104,14 @@ object ParserCombinator {
                        parser3: Parser[V]): Parser[T] =
     parser1 !>> parser2 >>! parser3
 
+  //One or more Parsers separated by the separator
   def sepBy1[T, U](parser: Parser[T],
                    separator: Parser[U]): Parser[(List[(T, U)], T)] =
     ++(parser >> separator) >> parser
 
+  //One or more Parsers separated by the separator
+  def sepBy[T, U](parser: Parser[T],
+                  separator: Parser[U]): Parser[(List[(T, U)], T)] = {
+    **(parser >> separator) >> parser
+  }
 }

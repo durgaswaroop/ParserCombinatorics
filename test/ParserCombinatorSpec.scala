@@ -175,4 +175,23 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     matched shouldBe (List(('1', ','), ('2', ','), ('3', ','), ('4', ',')), '5')
   }
 
+  it should "find zero or more characters separated by separator" in {
+    val comma = parseChar(',')
+    val digit = parseDigit
+    val digitSeparatedByZeroOrMoreComma = sepBy(digit, comma)
+
+    val parsedOutput1 = runParser("1,2,3,4,5", digitSeparatedByZeroOrMoreComma)
+    val parsedOutput2 = runParser("12,3,4,5", digitSeparatedByZeroOrMoreComma)
+    val parsedOutput3 = runParser("123,,5", digitSeparatedByZeroOrMoreComma)
+
+    parsedOutput1 shouldBe 'right
+    parsedOutput2 shouldBe 'right
+    parsedOutput3 shouldBe 'right
+
+    parsedOutput1.right.get._1 shouldBe
+      (List(('1', ','), ('2', ','), ('3', ','), ('4', ',')), '5')
+
+    parsedOutput2 shouldBe Right((List(), '1'), "2,3,4,5")
+  }
+
 }
