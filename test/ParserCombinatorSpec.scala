@@ -156,4 +156,23 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     runParser(input, betweenParser) shouldBe Right(("this is html".toList, ""))
   }
 
+  it should "find one or more characters separated by a separator" in {
+    val comma = parseChar(',')
+    val digit = parseDigit
+    val digitSeparatedByOneOrMoreComma = sepBy1(digit, comma)
+
+    runParser("12,3,4,5", digitSeparatedByOneOrMoreComma) shouldBe Left(
+      "Expecting ','. Got '2'")
+
+    val parsedOutput = runParser("1,2,3,4,5", digitSeparatedByOneOrMoreComma)
+
+    parsedOutput.isRight shouldBe true
+
+    val Right((matched, remaining)) = parsedOutput
+
+    remaining shouldBe empty
+
+    matched shouldBe (List(('1', ','), ('2', ','), ('3', ','), ('4', ',')), '5')
+  }
+
 }
