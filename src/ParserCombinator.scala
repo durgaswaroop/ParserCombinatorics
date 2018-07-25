@@ -1,5 +1,3 @@
-import javax.swing.JToolBar.Separator
-
 object ParserCombinator {
   // Parse a character char in the input.
   def parseChar(char: Char): Parser[Char] = {
@@ -113,5 +111,11 @@ object ParserCombinator {
   def sepBy[T, U](parser: Parser[T],
                   separator: Parser[U]): Parser[(List[(T, U)], T)] = {
     **(parser >> separator) >> parser
+  }
+
+  // Parses a char string like "1,2,3,4" into a List(1,2,3,4)
+  def parseOneOrMoreDigitAsList[U](parser: Parser[Char],
+                                   separator: Parser[U]): Parser[List[Int]] = {
+    sepBy(parser, separator) |>> (t => t._1.map(_._1.asDigit) :+ t._2.asDigit)
   }
 }

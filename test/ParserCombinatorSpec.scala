@@ -194,4 +194,13 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     parsedOutput2 shouldBe Right((List(), '1'), "2,3,4,5")
   }
 
+  it should "get a List of elements when parsed by one or more digit" in {
+    val comma = parseChar(',')
+    val digit = parseDigit
+    val pList = parseOneOrMoreDigitAsList(digit, comma)
+
+    runParser("1,2,3,4", pList) shouldBe Right((List(1, 2, 3, 4), ""))
+    runParser("1", pList) shouldBe Right((List(1), ""))
+  }
+
 }
