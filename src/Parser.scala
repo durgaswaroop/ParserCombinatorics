@@ -80,6 +80,7 @@ case class Parser[T](func: String => Either[String, (T, String)]) {
           }
       }
     }
+
     Parser(innerFunc)
   }
 
@@ -99,6 +100,7 @@ case class Parser[T](func: String => Either[String, (T, String)]) {
           }
       }
     }
+
     Parser(innerFunc)
   }
 

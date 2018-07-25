@@ -1,3 +1,4 @@
+import CharCombinator._
 import ParserCombinator._
 
 class MapCombinatorSpec extends TestBase("MapCombinator") {

@@ -1,3 +1,4 @@
+import CharCombinator._
 import ParserCombinator._
 
 class OrElseCombinatorSpec extends TestBase("OrElseCombinatorSpec") {

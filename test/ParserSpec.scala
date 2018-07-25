@@ -1,3 +1,4 @@
+import CharCombinator._
 import ParserCombinator._
 
 class ParserSpec extends TestBase("Parser") {
