@@ -40,7 +40,8 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     val atleastOneA = ++(parserA)
     runParser("AAABCD", atleastOneA) shouldBe Right(("AAA".toList, "BCD"))
     runParser("ABCD", atleastOneA) shouldBe Right(("A".toList, "BCD"))
-    runParser("BCD", atleastOneA) shouldBe Left("Expecting 'A'. Got 'B'")
+    runParser("BCD", atleastOneA) shouldBe Left(
+      "Error parsing 'A'. Unexpected 'B'")
   }
 
   it should "parse a character if it is present or not with opt" in {
@@ -52,17 +53,19 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
   it should "match a parser but throw it away for >>!" in {
     val parseAButThrowAwayB = parserA >>! parserB
     runParser("ABC", parseAButThrowAwayB) shouldBe Right(('A', "C"))
-    runParser("AC", parseAButThrowAwayB) shouldBe Left("Expecting 'B'. Got 'C'")
-    runParser("C", parseAButThrowAwayB) shouldBe Left("Expecting 'A'. Got 'C'")
+    runParser("AC", parseAButThrowAwayB) shouldBe Left(
+      "Error parsing 'B'. Unexpected 'C'")
+    runParser("C", parseAButThrowAwayB) shouldBe Left(
+      "Error parsing 'A'. Unexpected 'C'")
   }
 
   it should "match a parser but throw it away for !>>" in {
     val parseAAndBButThrowAwayA = parserA !>> parserB
     runParser("ABC", parseAAndBButThrowAwayA) shouldBe Right(('B', "C"))
     runParser("AC", parseAAndBButThrowAwayA) shouldBe Left(
-      "Expecting 'B'. Got 'C'")
+      "Error parsing 'B'. Unexpected 'C'")
     runParser("C", parseAAndBButThrowAwayA) shouldBe Left(
-      "Expecting 'A'. Got 'C'")
+      "Error parsing 'A'. Unexpected 'C'")
   }
 
   it should "match string between quotes" in {
@@ -98,7 +101,7 @@ class ParserCombinatorSpec extends TestBase("ParseCombinator") {
     val digitSeparatedByOneOrMoreComma = sepBy1(digit, comma)
 
     runParser("12,3,4,5", digitSeparatedByOneOrMoreComma) shouldBe Left(
-      "Expecting ','. Got '2'")
+      "Error parsing ','. Unexpected '2'")
 
     val parsedOutput = runParser("1,2,3,4,5", digitSeparatedByOneOrMoreComma)
 

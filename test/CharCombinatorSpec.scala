@@ -17,7 +17,7 @@ class CharCombinatorSpec extends TestBase("CharCombinator") {
   }
 
   it should "return a failure msg in case of no match" in {
-    runParser("ABC", parserC) shouldBe Left("Expecting 'C'. Got 'A'")
+    runParser("ABC", parserC) shouldBe Left("Error parsing 'C'. Unexpected 'A'")
   }
 
   it should "return No more input for empty and null string inputs" in {
@@ -27,7 +27,7 @@ class CharCombinatorSpec extends TestBase("CharCombinator") {
 
   it should "run the parser on the given input" in {
     runParser("Hello", parserH).merge shouldBe ('H', "ello")
-    runParser("hola", parserH).merge shouldBe "Expecting 'H'. Got 'h'"
+    runParser("hola", parserH).merge shouldBe "Error parsing 'H'. Unexpected 'h'"
     runParser("", parserH).merge shouldBe "No more input"
   }
 
@@ -65,5 +65,11 @@ class CharCombinatorSpec extends TestBase("CharCombinator") {
     runParser("1,2,3,4", pList) shouldBe Right((List(1, 2, 3, 4), ""))
     runParser("1", pList) shouldBe Right((List(1), ""))
   }
+
+  //  it should "return a helpful message with label set" in {
+  //    val parseDigitWithLabel: Parser[Char] = parseDigit <-> "digit"
+  //    runParser("A", parseDigitWithLabel) shouldBe Left(
+  //      "Error parsing 'digit'. Unexpected 'A'")
+  //  }
 
 }

@@ -16,8 +16,10 @@ class OrElseCombinatorSpec extends TestBase("OrElseCombinatorSpec") {
   it should "return the output of second parser if first parsers fails" in {
     runParser("BC", parserAOrB) shouldBe Right('B', "C")
     runParser("BZZ", parserAOrB) shouldBe Right('B', "ZZ")
-    runParser("CB", parserAOrB) shouldBe Left("Expecting 'B'. Got 'C'")
-    runParser("CZZ", parserAOrB) shouldBe Left("Expecting 'B'. Got 'C'")
+    runParser("CB", parserAOrB) shouldBe Left(
+      "Error parsing 'B'. Unexpected 'C'")
+    runParser("CZZ", parserAOrB) shouldBe Left(
+      "Error parsing 'B'. Unexpected 'C'")
   }
 
   it should "return that no more chars are present for empty string" in {
@@ -31,7 +33,8 @@ class OrElseCombinatorSpec extends TestBase("OrElseCombinatorSpec") {
   }
 
   it should "fail for three parsers in series for input XYZ" in {
-    runParser("XYZ", parserAOrBOrC) shouldBe Left("Expecting 'C'. Got 'X'")
+    runParser("XYZ", parserAOrBOrC) shouldBe Left(
+      "Error parsing 'C'. Unexpected 'X'")
   }
 
 }

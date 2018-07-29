@@ -15,11 +15,13 @@ class AndThenCombinatorSpec extends TestBase("AndThenCombinator") {
   }
 
   it should "return failure when parser1 fails" in {
-    runParser("BCD", parserAB) shouldBe Left("Expecting 'A'. Got 'B'")
+    runParser("BCD", parserAB) shouldBe Left(
+      "Error parsing 'A'. Unexpected 'B'")
   }
 
   it should "return failure when parser2 fails" in {
-    runParser("ACD", parserAB) shouldBe Left("Expecting 'B'. Got 'C'")
+    runParser("ACD", parserAB) shouldBe Left(
+      "Error parsing 'B'. Unexpected 'C'")
   }
 
   it should "return No more input when input is empty" in {
@@ -36,7 +38,8 @@ class AndThenCombinatorSpec extends TestBase("AndThenCombinator") {
 
   it should "fail for three parsers combined in series" in {
     runParser("AB", parserABC) shouldBe Left("No more input")
-    runParser("XYZ", parserABC) shouldBe Left("Expecting 'A'. Got 'X'")
+    runParser("XYZ", parserABC) shouldBe Left(
+      "Error parsing 'A'. Unexpected 'X'")
   }
 
 }

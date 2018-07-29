@@ -24,7 +24,8 @@ class MapCombinatorSpec extends TestBase("MapCombinator") {
 
   it should "return if the parsing fails" in {
     val mParserBF1 = parserB |>> isA
-    runParser("ABC", mParserBF1) shouldBe Left("Expecting 'B'. Got 'A'")
+    runParser("ABC", mParserBF1) shouldBe Left(
+      "Error parsing 'B'. Unexpected 'A'")
     runParser("", mParserBF1) shouldBe Left("No more input")
   }
 
