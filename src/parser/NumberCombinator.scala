@@ -1,5 +1,7 @@
-import CharCombinator._
-import ParserCombinator._
+package parser
+
+import parser.CharCombinator.{parseChar, parseDigit}
+import parser.ParserCombinator.{++, ??, runParser}
 
 object NumberCombinator {
 
@@ -24,7 +26,7 @@ object NumberCombinator {
       }
     }
 
-    Parser(innerFunc) |>> (_.toInt)
+    parser.Parser(innerFunc) |>> (_.toInt)
   }
 
   def parseFloat: Parser[Float] = {

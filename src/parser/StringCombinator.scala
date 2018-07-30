@@ -1,5 +1,7 @@
-import CharCombinator._
-import ParserCombinator._
+package parser
+
+import parser.CharCombinator.{allCharsOf, anyCharOf}
+import parser.ParserCombinator.**
 
 object StringCombinator {
   def parseString(stringToMatch: String): Parser[String] =

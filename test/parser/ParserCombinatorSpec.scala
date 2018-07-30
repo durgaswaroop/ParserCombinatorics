@@ -1,6 +1,8 @@
-import CharCombinator._
-import ParserCombinator.{between => inBetween, _}
-import StringCombinator._
+package parser
+
+import parser.CharCombinator._
+import parser.ParserCombinator.{between => inBetween, _}
+import parser.StringCombinator._
 
 class ParserCombinatorSpec extends TestBase("ParseCombinator") {
 

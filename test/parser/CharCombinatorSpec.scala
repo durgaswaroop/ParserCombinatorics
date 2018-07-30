@@ -1,5 +1,7 @@
-import CharCombinator._
-import ParserCombinator.runParser
+package parser
+
+import parser.CharCombinator._
+import parser.ParserCombinator.runParser
 
 class CharCombinatorSpec extends TestBase("CharCombinator") {
   val parserA: Parser[Char] = parseChar('A')

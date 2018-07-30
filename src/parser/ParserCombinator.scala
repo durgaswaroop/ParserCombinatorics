@@ -1,3 +1,5 @@
+package parser
+
 object ParserCombinator {
 
   // Runs the given parser on the passed input string

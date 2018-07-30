@@ -1,5 +1,7 @@
-import ParserCombinator.runParser
-import StringCombinator._
+package parser
+
+import parser.ParserCombinator.runParser
+import parser.StringCombinator._
 
 class StringCombinatorSpec extends TestBase("StringCombinator") {
 

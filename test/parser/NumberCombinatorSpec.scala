@@ -1,5 +1,7 @@
-import NumberCombinator._
-import ParserCombinator._
+package parser
+
+import parser.NumberCombinator._
+import parser.ParserCombinator._
 
 class NumberCombinatorSpec extends TestBase("IntCombinator") {
 

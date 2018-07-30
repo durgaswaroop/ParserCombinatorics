@@ -1,4 +1,6 @@
-import ParserCombinator.runParser
+package parser
+
+import parser.ParserCombinator._
 
 case class Parser[T](func: String => Either[String, (T, String)]) {
 

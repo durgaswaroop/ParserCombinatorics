@@ -1,4 +1,6 @@
-import ParserCombinator.{choice, sepBy, sequence}
+package parser
+
+import parser.ParserCombinator.{choice, sepBy, sequence}
 
 object CharCombinator {
   // Parse a character char in the input.

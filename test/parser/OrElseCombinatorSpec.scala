@@ -1,7 +1,9 @@
-import CharCombinator._
-import ParserCombinator._
+package parser
 
-class OrElseCombinatorSpec extends TestBase("OrElseCombinatorSpec") {
+import parser.CharCombinator._
+import parser.ParserCombinator._
+
+class OrElseCombinatorSpec extends TestBase("parser.OrElseCombinatorSpec") {
   val parserA: Parser[Char] = parseChar('A')
   val parserB: Parser[Char] = parseChar('B')
   val parserC: Parser[Char] = parseChar('C')
