@@ -5,6 +5,29 @@ import parser.ParserCombinator._
 case class Parser[T](func: String => Either[String, (T, String)]) {
 
   /**
+    * Sets the label for the parser.
+    *
+    * The label is returned when it fails instead of giving the specific
+    * character it is looking for.
+    */
+  def setLabel(parser: Parser[T], label: String): Parser[T] = {
+    def innerFunc(input: String) = {
+      val result = parser.func(input)
+      result match {
+        case Right(value) => Right(value)
+        case Left(value) =>
+          val pattern = "Error parsing '(\\w)'. ([\\w|\\s|']+)".r
+          val pattern(_, rest) = value
+          Left(s"Error parsing '$label'. $rest")
+      }
+    }
+
+    Parser(innerFunc)
+  }
+
+  def <->(label: String): Parser[T] = setLabel(this, label)
+
+  /**
     * 1. Run the first parser on the given input.
     *   - If there is a failure, just return from there.
     * 2. If the first parsing succeeds, run the second parser on the remaining
@@ -44,7 +67,7 @@ case class Parser[T](func: String => Either[String, (T, String)]) {
       val firstParse = runParser(input, this)
       firstParse match {
         case Right(_) => firstParse
-        case Left(_)  => runParser(input, other)
+        case Left(_) => runParser(input, other)
       }
     }
 
@@ -60,7 +83,7 @@ case class Parser[T](func: String => Either[String, (T, String)]) {
       val parserOutput: Either[String, (T, String)] = runParser(input, this)
       parserOutput match {
         case Right((matched, remaining)) => Right((func(matched), remaining))
-        case Left(value)                 => Left(value)
+        case Left(value) => Left(value)
       }
     }
 
@@ -77,7 +100,7 @@ case class Parser[T](func: String => Either[String, (T, String)]) {
         case Right((matched, remaining)) =>
           val secondParse = runParser(remaining, other)
           secondParse match {
-            case Left(value)                 => Left(value)
+            case Left(value) => Left(value)
             case Right((_, secondRemaining)) => Right(matched, secondRemaining)
           }
       }

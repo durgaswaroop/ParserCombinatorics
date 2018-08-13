@@ -68,10 +68,11 @@ class CharCombinatorSpec extends TestBase("CharCombinator") {
     runParser("1", pList) shouldBe Right((List(1), ""))
   }
 
-  //  it should "return a helpful message with label set" in {
-  //    val parseDigitWithLabel: Parser[Char] = parseDigit <-> "digit"
-  //    runParser("A", parseDigitWithLabel) shouldBe Left(
-  //      "Error parsing 'digit'. Unexpected 'A'")
-  //  }
+    it should "return a helpful message with label set" in {
+      parseChar('c') <-> "alphabet"
+      val parseDigitWithLabel: Parser[Char] = parseDigit <-> "digit"
+      runParser("A", parseDigitWithLabel) shouldBe Left(
+        "Error parsing 'digit'. Unexpected 'A'")
+    }
 
 }
